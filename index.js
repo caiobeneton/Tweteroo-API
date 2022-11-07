@@ -14,7 +14,16 @@ app.post("/sign-up", (req, res) => {
         avatar: req.body.avatar
     }
     users.push(user)
-    res.send(users)
+    res.send("Ok")
+})
+
+app.post("/tweets", (req, res) => {
+    const tweet = {
+        username: req.body.username,
+        tweet: req.body.tweet
+    }
+    tweets.push(tweet)
+    res.send("Ok")
 })
 
 app.listen(5000, () => {

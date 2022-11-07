@@ -9,21 +9,47 @@ const users = []
 const tweets = []
 
 app.post("/sign-up", (req, res) => {
-    const user = {
-        username: req.body.username,
-        avatar: req.body.avatar
+    const {username, avatar} = req.body
+
+    if (!username || !avatar) {
+        res.status(422).send("Todos os campos são obrigatórios")
+        return
     }
+
+    const user = {
+        username,
+        avatar
+    }
+
     users.push(user)
-    res.send("Ok")
+    res.send("OK")
 })
 
 app.post("/tweets", (req, res) => {
-    const tweet = {
-        username: req.body.username,
-        tweet: req.body.tweet
+    const {username, tweet} = req.body
+
+    const userData = users.find((obj) => obj.username === username)
+
+    const objTweet = {
+        username,
+        avatar: userData.avatar,
+        tweet
     }
-    tweets.push(tweet)
-    res.send("Ok")
+
+    tweets.push(objTweet)
+    res.send("OK")
+})
+
+app.get("/tweets", (req, res) => {
+    
+    if (tweets.length <= 10) {
+        const reverse = [...tweets].reverse()
+        res.send(reverse)
+    } else {
+        const recent = tweets.slice(-10)
+        const reverse = [...recent].reverse()
+        res.send(reverse)
+    }
 })
 
 app.listen(5000, () => {
